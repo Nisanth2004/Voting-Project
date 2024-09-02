@@ -1,4 +1,4 @@
-package com.voting.entity;
+package com.voting.entity.security;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

@@ -1,11 +1,11 @@
-package com.voting.service;
+package com.voting.service.security;
 
-import com.voting.entity.Admin;
-import com.voting.entity.MLA;
-import com.voting.entity.User;
-import com.voting.repository.AdminRepository;
-import com.voting.repository.MLARepository;
-import com.voting.repository.UserRepository;
+import com.voting.entity.security.Admin;
+import com.voting.entity.security.MLA;
+import com.voting.entity.security.User;
+import com.voting.repository.security_repo.AdminRepository;
+import com.voting.repository.security_repo.MLARepository;
+import com.voting.repository.security_repo.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

@@ -1,4 +1,4 @@
-package com.voting.entity;
+package com.voting.entity.security;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -14,7 +14,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Admin {
+public class MLA {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

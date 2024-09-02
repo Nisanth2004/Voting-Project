@@ -57,6 +57,10 @@ function HomePage() {
         >
           Sign Up
         </Link>
+        <Link
+          to="/nominators"
+          className="px-6 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition"
+        > View All Candicates </Link>
       </div>
 
       {/* Featured Polls Section */}
