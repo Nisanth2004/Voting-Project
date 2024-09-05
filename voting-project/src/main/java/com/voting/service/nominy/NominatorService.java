@@ -26,7 +26,7 @@ public class NominatorService {
         String photoImageKey = s3Service.uploadFile(photo);
         String nativityImageKey = s3Service.uploadFile(nativityCertificate);
 
-        // Create the Nominator entity and save to the database
+        // Create the Nominator entity and save to the database with payment status "PENDING"
         Nominator nominator = Nominator.builder()
                 .name(name)
                 .age(age)
@@ -34,10 +34,12 @@ public class NominatorService {
                 .aadharNumber(aadharNumber)
                 .photoImagePath(photoImageKey)
                 .nativityImagePath(nativityImageKey)
+                .paymentStatus("PENDING") // Set payment status to "PENDING"
                 .build();
 
         return nominatorRepository.save(nominator);
     }
+
 
     public Nominator findNominatorById(Integer id) {
         return nominatorRepository.findById(id).orElse(null);
@@ -46,4 +48,14 @@ public class NominatorService {
     public List<Nominator> findAllNominators() {
         return nominatorRepository.findAll();
     }
+
+    public void updatePaymentStatus(Integer nominatorId, String status) {
+        Nominator nominator = findNominatorById(nominatorId);
+        if (nominator != null) {
+            nominator.setPaymentStatus(status);
+            nominatorRepository.save(nominator);
+        }
+    }
+
+
 }

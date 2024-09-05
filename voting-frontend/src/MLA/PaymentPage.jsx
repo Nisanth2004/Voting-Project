@@ -40,22 +40,7 @@ const PaymentPage = () => {
         },
         onApprove: async (data, actions) => {
           return actions.order.capture().then(async function (details) {
-            try {
-              // Send payment details to the server
-              await axios.post('http://localhost:8080/api/nominator/payment', {
-                nominatorId,
-                orderId: data.orderID,
-                payerId: data.payerID,
-                amount: '1.00',  // Replace with the actual amount if needed
-                currency: 'USD'
-              });
-              alert('Transaction completed by ' + details.payer.name.given_name);
-              
-              // Redirect to success page or another relevant page
-              navigate('/success', { state: { nominatorId } });
-            } catch (error) {
-              console.error('Payment processing failed:', error);
-            }
+            alert('Transaction completed by ' + details.payer.name.given_name);
           });
         },
         onError: (err) => {
@@ -70,21 +55,45 @@ const PaymentPage = () => {
     };
   }, [nominatorId, navigate]);
 
+  const confirmPayment = async () => {
+    try {
+      // Ensure nominatorId is included in the request body
+      const response = await axios.post('http://localhost:8080/api/nominator/payment', {
+        nominatorId,
+        status: 'SUCCESS',  // Set payment status to 'Success'
+      }, { 
+        headers: { 'Content-Type': 'application/json' } // Ensure correct content type
+      });
+      alert('Payment status updated to Success');
+      navigate('/success', { state: { nominatorId } });
+    } catch (error) {
+      console.error('Failed to update payment status:', error);
+      alert('Failed to update payment status. Please try again later.');
+    }
+  };
+  
   return (
     <div className="min-h-screen flex flex-col items-center bg-gradient-to-r from-green-200 to-blue-200 p-6">
       <h1 className="text-4xl font-extrabold text-gray-800 mb-8">Payment</h1>
 
       <div className="bg-white p-8 rounded-3xl shadow-lg max-w-md mx-auto space-y-6">
         <h2 className="text-2xl font-bold mt-6 mb-4">Payment Details</h2>
-        <p className="text-lg mb-4">Amount to Pay: ₹1</p>
+        <p className="text-lg mb-4">Amount to Pay: $1</p>
 
         <div id="paypal-button-container" className="my-4"></div>
+
+        <button
+          onClick={confirmPayment}
+          className="px-6 py-3 bg-green-500 text-white text-lg rounded-full shadow-lg hover:bg-green-600 transition-transform transform hover:scale-105 duration-300 mt-4"
+        >
+          Confirm Payment
+        </button>
 
         <button
           onClick={() => navigate('/nominate', { state: { nominatorId } })}
           className="px-6 py-3 bg-gray-500 text-white text-lg rounded-full shadow-lg hover:bg-gray-600 transition-transform transform hover:scale-105 duration-300 mt-4"
         >
-          Back 
+          Back
         </button>
       </div>
     </div>

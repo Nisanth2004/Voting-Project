@@ -1,5 +1,6 @@
 package com.voting.controller.nominy;
 
+import com.voting.dto.PaymentStatusRequest;
 import com.voting.entity.nominy.Nominator;
 import com.voting.service.nominy.NominatorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,6 +65,19 @@ public class NominatorController {
         } else {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
+    }
+
+
+    // Add new endpoint to update payment status
+    @PostMapping("/payment")
+    public ResponseEntity<String> updatePaymentStatus(@RequestBody PaymentStatusRequest request) {
+        Integer nominatorId = request.getNominatorId();
+        String status = request.getStatus();
+
+        // Call the service method to update payment status
+        nominatorService.updatePaymentStatus(nominatorId, status);
+
+        return ResponseEntity.ok("Payment status updated successfully");
     }
 
 }

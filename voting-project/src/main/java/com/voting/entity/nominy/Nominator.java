@@ -23,5 +23,6 @@ public class Nominator {
     private Integer aadharNumber;
     private String photoImagePath;
     private String nativityImagePath;
+    private String paymentStatus;
 
 }
