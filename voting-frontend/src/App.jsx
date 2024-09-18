@@ -2,14 +2,15 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { PayPalScriptProvider } from "@paypal/react-paypal-js"; // Add this import
 
-import HomePage from './component/HomePage';
-import Signup from './component/Signup';
-import SignIn from './component/SignIn';
+import HomePage from './home/HomePage';
+import Signup from './home/Signup';
+import SignIn from './home/SignIn';
 import Nominal from './MLA/Nominal';
 import UserPage from './USER/userPage';
 import NominateForm from './MLA/NominateForm';
 import PaymentPage from './MLA/PaymentPage';
 import NominatorsList from './Nominators/NominatorsList';
+import SuccessPage from './MLA/SuccessPage';
 
 import './App.css';
 import ErrorPage from './pages/ErrorPage';
@@ -28,6 +29,7 @@ function App() {
           <Route path="/nominate" element={<NominateForm />} />
           <Route path="/payment" element={<PaymentPage />} />
           <Route path="/nominators" element={<NominatorsList />} />
+          <Route path="/success" element={<SuccessPage />} />
         </Routes>
       </Router>
     </PayPalScriptProvider>

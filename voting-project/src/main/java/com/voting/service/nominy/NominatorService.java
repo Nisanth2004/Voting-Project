@@ -21,7 +21,7 @@ public class NominatorService {
         this.s3Service = s3Service;
     }
 
-    public Nominator saveNominator(String name, Integer age, String email, Integer aadharNumber, MultipartFile photo, MultipartFile nativityCertificate) throws IOException {
+    public Nominator saveNominator(String name, Integer age, String email, String aadharNumber, MultipartFile photo, MultipartFile nativityCertificate) throws IOException {
         // Upload the photo and nativity certificate to S3
         String photoImageKey = s3Service.uploadFile(photo);
         String nativityImageKey = s3Service.uploadFile(nativityCertificate);
@@ -40,7 +40,6 @@ public class NominatorService {
         return nominatorRepository.save(nominator);
     }
 
-
     public Nominator findNominatorById(Integer id) {
         return nominatorRepository.findById(id).orElse(null);
     }
@@ -57,5 +56,16 @@ public class NominatorService {
         }
     }
 
+    public Nominator saveNominator(Nominator nominator) {
+        return nominatorRepository.save(nominator); // update the nominator
+    }
 
+
+    public boolean isEmailExists(String email) {
+        return nominatorRepository.existsByEmail(email);
+    }
+
+    public boolean isAadharExists(String aadharNumber) {
+        return nominatorRepository.existsByAadharNumber(aadharNumber);
+    }
 }

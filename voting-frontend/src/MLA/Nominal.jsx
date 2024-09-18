@@ -2,48 +2,29 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import Header from '../pages/Header';
+import 'animate.css'; // Make sure you have animate.css installed
 
 const Nominal = () => {
-  const [mlaDetails, setMlaDetails] = useState(null);
   const [error, setError] = useState('');
   const { mlaId } = useParams();
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchMlaDetails = async () => {
+    const checkAuthentication = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/api/mla/details/${mlaId}`, { withCredentials: true });
-        if (response.data) {
-          setMlaDetails(response.data);
-        } else {
-          setError('No MLA details found.');
+        const response = await axios.get('http://localhost:8080/api/auth/check', { withCredentials: true });
+        if (response.status !== 200) {
+          navigate('/signin'); // Redirect to login if not authenticated
         }
       } catch (err) {
-        setError('Failed to fetch details');
-        console.error('Error fetching details:', err);
-        // Handle unauthorized access
-        if (err.response && err.response.status === 401) {
-          navigate('/signin'); // Redirect to login if unauthorized
-        }
+        console.error('Authentication check failed:', err);
+        navigate('/error'); // Redirect to error page if authentication check fails
       }
     };
 
     checkAuthentication();
-    fetchMlaDetails();
+  }, [navigate]);
 
-  }, [mlaId, navigate]);
-
-  const checkAuthentication = async () => {
-    try {
-      const response = await axios.get('http://localhost:8080/api/auth/check', { withCredentials: true });
-      if (response.status !== 200) {
-        navigate('/signin'); // Redirect to login if not authenticated
-      }
-    } catch (err) {
-      console.error('Authentication check failed:', err);
-      navigate('/error'); // Redirect to login if authentication check fails
-    }
-  };
   const handleLogout = async () => {
     try {
       const response = await axios.post('http://localhost:8080/api/auth/logout', null, { withCredentials: true });
@@ -60,7 +41,6 @@ const Nominal = () => {
       console.error("Logout error:", error);
     }
   };
-  
 
   return (
     <div className="min-h-screen flex flex-col items-center bg-gradient-to-r from-teal-200 via-green-200 to-blue-200 p-6">
@@ -78,31 +58,21 @@ const Nominal = () => {
       <main className="w-full max-w-5xl mx-auto my-8 flex flex-col items-center space-y-8">
         {error && <p className="text-red-500 text-center mb-4 animate__animated animate__fadeIn">{error}</p>}
 
-        {mlaDetails && (
-          <section className="bg-white shadow-lg rounded-3xl p-8 md:p-12 w-full max-w-4xl mx-auto space-y-6 border border-gray-200 animate__animated animate__fadeIn">
-            <h2 className="text-2xl md:text-3xl font-bold text-blue-800 border-b-2 border-blue-600 pb-2 mb-4">
-              MLA Details
-            </h2>
-            <div className="flex flex-col space-y-4">
-              <p className="text-lg"><strong className="text-blue-600">Name:</strong> {mlaDetails.name || 'N/A'}</p>
-              <p className="text-lg"><strong className="text-blue-600">Email:</strong> {mlaDetails.email || 'N/A'}</p>
-            </div>
-          </section>
-        )}
-
-        <section className="bg-white shadow-lg rounded-3xl p-8 md:p-12 w-full max-w-4xl mx-auto space-y-6 border border-gray-200 animate__animated animate__fadeIn">
+        <section className="bg-white shadow-lg rounded-3xl p-8 md:p-12 w-full max-w-4xl mx-auto space-y-6 border border-gray-200 animate__animated animate__fadeIn animate__delay-1s animate__bounceIn">
           <h2 className="text-2xl md:text-3xl font-bold text-blue-800 border-b-2 border-blue-600 pb-2 mb-4">
-            Election Rules for Panchayat Election
+            Application Form Fill-Up Guidelines
           </h2>
-          <ul className="list-disc pl-5 space-y-4">
-            <li><strong className="text-blue-600">Do:</strong> Ensure that all campaign materials are approved by the election commission.</li>
-            <li><strong className="text-blue-600">Do:</strong> Follow all guidelines for public meetings and rallies.</li>
-            <li><strong className="text-blue-600">Don't:</strong> Engage in any form of bribery or inducement.</li>
-            <li><strong className="text-blue-600">Don't:</strong> Use abusive language or spread false information about opponents.</li>
-          </ul>
+          <div className="space-y-4">
+            <p className="text-lg"><strong>1. Register a New Nominee:</strong> Ensure all required details are filled in accurately.</p>
+            <p className="text-lg"><strong>2. Upload Required Documents:</strong> Prepare and upload necessary documents as part of the application.</p>
+            <p className="text-lg"><strong>3. Submit the Form:</strong> Once the form is completed and documents are uploaded, submit the form for review.</p>
+            <p className="text-lg"><strong>4. Payment:</strong> A processing fee of 1000 INR is required. You will be redirected to the payment page after form submission.</p>
+            <p className="text-lg"><strong>5. Confirmation:</strong> You will receive a confirmation email upon successful submission and payment.</p>
+            <p className="text-lg"><strong>6. Contact Us:</strong> For any queries or assistance, please contact our support team.</p>
+          </div>
         </section>
 
-        <section className="bg-white shadow-lg rounded-3xl p-8 md:p-12 w-full max-w-4xl mx-auto space-y-6 border border-gray-200 animate__animated animate__fadeIn">
+        <section className="bg-white shadow-lg rounded-3xl p-8 md:p-12 w-full max-w-4xl mx-auto space-y-6 border border-gray-200 animate__animated animate__fadeIn animate__delay-2s animate__slideInUp">
           <h2 className="text-2xl md:text-3xl font-bold text-blue-800 border-b-2 border-blue-600 pb-2 mb-4">
             Important Resources
           </h2>

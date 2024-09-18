@@ -20,7 +20,7 @@ public class Nominator {
     private String name;
     private Integer age;
     private String email;
-    private Integer aadharNumber;
+    private String aadharNumber;
     private String photoImagePath;
     private String nativityImagePath;
     private String paymentStatus;
